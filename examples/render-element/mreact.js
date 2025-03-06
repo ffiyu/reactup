@@ -1,7 +1,5 @@
-const mReactElementSymbol = Symbol("mReactElement");
 function createElement(type, props, ...children) {
   return {
-    $$typeof: mReactElementSymbol,
     type,
     props: {
       ...props,
@@ -16,8 +14,9 @@ function render(element, container) {
     return;
   }
 
+  const isElement = typeof element === "object" && "type" in element; // 这种判断实际中不严谨
   // 非 element 直接,直接以字符串渲染
-  if (element.$$typeof !== mReactElementSymbol) {
+  if (!isElement) {
     const textNode = document.createTextNode(String(element));
     container.appendChild(textNode);
     return;
