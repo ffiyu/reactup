@@ -175,6 +175,7 @@ createRoot(document.getElementById("root")).render(<App />);
 // file: mreact.js
 
 function createElement(type, props, ...children) {
+  //简单地创建并返回一个元素对象
   return {
     type,
     props: {
