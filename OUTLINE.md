@@ -1,79 +1,78 @@
-# 理解组件
+# React 基本原理
 
-## 什么是组件
+## React 是一个运行时 JavaScript 库
 
-### 组件是 JavaScript 函数
+- 引用官方介绍：React is a JavaScript library for building user interfaces.
+- 展开强调**运行时**:
+  - React 只能执行代码，不能分析、修改代码。
+  - react 库、我们写的组件代码都是 JavaScript 代码，遵循 JavaScript 语法、执行规则。
+- 用运行时 JavaScript 解释一些概念和现象：
+  - 解释 react 的基本工作原理
+  - 为什么我们说 react 更灵活
+  - 组件内的变量每次都会重新声明
+  - HOC
+  - 返回不同的 JSX，组件状态不会重置
 
-- 许多初学者认为 React 把组件函数进行层层封装，注入了许多魔法。但这里要强调，组件就是普通的 JavaScript 函数。
-- 具有 JavaScript 函数的所有特性，一等公民，闭包，递归等。提及 HOC。
-- 具有 JavaScript 函数的限制。提及无状态组件，提及 hook。
-- 组件每次渲染，都是一次函数执行。
-- 现在看起来像是一句废话，但是，理解这点很重要，后面会反复提及。
-- 示例：组件内部变量。
+## 组件
 
-### 不要从类组件的角度理解函数组件
+## 函数组件与类组件
 
-- 这是两种完全不同的实现方式。
-- 函数组件不是类组件的语法糖。
-- 不讨论类组件。
+## 组件函数
 
-### 组件应该是纯函数
+### 什么是组件组件函数
 
-- 什么是纯函数？
-- 为什么组件应该是纯函数
-- props 和 state 是组件的输入。
+### 组件 和 renderXxx
 
-### 组件是数据到视图的映射
+### renderXxx
 
-- 从一个抽象的角度理解组件。
-- 提醒我们如何编写一个组件：把数据转成 UI。
+### Render Prop（including Render Children）
 
-### 组件函数是一个工厂
+## JSX 与 ReactElement
 
-- 函数组件是工厂，生产的产品是组件实例。
-- 一次函数执行，返回一个组件实例。
-- 组件的状态如何维护？
+### react 与 jsx 语法
 
-### 组件函数与 renderXxx 函数
+### jsx 语法的编译
 
-## 理解 JSX 语法
+### ReactElement 与 Fiber
 
-### JSX 是一种 JavaScript 语法糖
+## Render
 
-- JSX 是 JavaScript 的拓展语法，支持在 JavaScript 使用类似 HTML 的写法。解决 HTML 适合编写页面结构，但不支持 if/for 等编程逻辑的问题。
+### 建议模型：递归 dfs
 
-- jsx 与 模版语法的区别。
+### Fiber
 
-### JSX 编译过程
+### Reconciliation and Commit
 
-### ReactElement 对象
+### Reconciliation：循环、可中断、异步
 
-### 再看函数组件
+### Commit：同步、Effects 执行
 
-- 函数组件返回 React Element，每次执行，都会创建新的元素对象（实例）。
+### Concurrency and Schedule
 
-### Button 与 <Button />
+## Hooks
 
-### 组件（Component）、元素（Element）、节点（Node）
+### 理解 Hooks 的本质
 
-- 元素复制
+### Hooks 的规则
 
-### React.Fragment(<></>)
+### useState
 
-## 组件函数什么时候执行
+### useEffect and useLayoutEffect
 
-### 初次渲染
+### useRef
 
-### 父组件更新
+### useMemo and useCallback
 
-### 状态/Context 更新
+### useContext
 
-### 冗余执行
+### useRef
 
-### React.Memo()
+## 杂项
 
-- 与 useMemo()
+## Ref
 
-### StrictMode
+## Context
 
-### 组件外层的 setState
+## Portals
+
+## HOC
