@@ -14,7 +14,7 @@
 const ele = Button({ onClick: handler, children: "Click Me" });
 ```
 
-这就要求我们的组件函数的签名长这样：
+这就要求我们的组件函数长这样：
 
 ```js
 // 从 React 19开始，支持直接传入第二个参数 `ref`，不需要 `forwardRef`
@@ -38,11 +38,11 @@ function FC(props, ref) {
 
 如果你之前是用类组件的思维模式理解函数组件，请你忘记它，只需要记住，组件就是一个函数。 -->
 
-## 组件的渲染就是函数的执行
+## 组件渲染与函数执行
 
 React 每次渲染（首次渲染和更新）组件的过程中，都会执行组件函数，根据组件函数的返回构建展示的 UI。
 
-比如，对这个 `Timer` 组件：
+比如，对这个 `Counter` 组件：
 
 ```jsx
 // counter
@@ -62,12 +62,12 @@ function Counter() {
 }
 ```
 
-React 通过多次调用 `Timer()` 函数，来渲染和更新视图。
+React 通过多次调用 `Counter()` 函数，来渲染和更新视图。
 
 ```js
-Count(); // 首次渲染执行，useState 返回 count = 0
+Counter(); // 首次渲染执行，useState 返回 count = 0
 // 点击 button 后更新，设置 count 状态为 1
-Count(); // 函数再次执行，useState 返回 count = 1
+Counter(); // 函数再次执行，useState 返回 count = 1
 ```
 
 有初学者可能会认为，更新时代码是“按需执行”的，只有依赖 `count` 变量的语句和 JSX 元素才会执行更新。
@@ -75,7 +75,49 @@ Count(); // 函数再次执行，useState 返回 count = 1
 
 ## 即用即废的内部变量
 
-<!-- TODO -->
+有这个组件：
+
+```js
+function Counter(props) {
+  const step = props.step || 1;
+
+  const [count, setCount] = useState(0);
+
+  function handleClick() {
+    setCount(count + step);
+  }
+
+  // return (
+  //   <div>
+  //     <div>Count: {count}</div>
+  //     <button onClick={handleClick}> + </button>
+  //   </div>
+  // )
+  return createElement(
+    "div",
+    {},
+    createElement("div", {}, `Count: ${count}`),
+    createElement("button", { onClick: handleClick }, ` + `)
+  );
+}
+```
+
+如果使用组件 `<Counter step={2} />`，从 JavaScript 角度看，执行 `Counter({step:2})`，会发生什么？
+
+1. 声明并初始化局部变量 `step = 2`。
+2. 创建局部变量 `count`、`setCount`，调用 `useState(0)`，React 发现是第一次调用，所以返回初始值`0`和一个更新函数。
+3. 声明了内部函数 `handleClick`，它被绑定到返回的对象上。
+4. 调用 `createElement` 创建并最终返回一个 ReactElement 对象，它有两个子节点，也都是 ReactElement 对象。
+
+让我们函数执行后发生的事：
+
+- `step`、`count` 作为函数内的局部基本类型变量，是按值拷贝的，一旦函数执行结束，变量生命周期就结束了，等待被回收。
+- `setCount`、`handleClick` 作为函数，而且返回值引用到了它们，所以它们还可以继续存在。
+
+当点击事件触发 `handleClick -> setCount(0+2) -> React 更新组件`。
+
+更新时，`props` 没有变化，所以还是执行 `Counter({step:2})`。然后还是重复第一次的工作，不同的是，这次调用 `useState(0)` 时，React 发现这个组件已经渲染过了，而且它最新的状态是`2`，所以这次 `count = 2`。
+注意，这次调用，会创建全新的局部变量和函数 `step`、`count`、`handleClick` 都是
 
 ## 组件函数的范围
 
