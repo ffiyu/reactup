@@ -2,7 +2,7 @@
 
 前面说，组件即函数，现在，我们来看看组件函数的返回值：JSX，即 React Element。
 
-## JSX 是 createElement 的语法糖
+## JSX 等效于 `React.createElement`
 
 JSX 是 `React.createElement` 的语法糖。
 
